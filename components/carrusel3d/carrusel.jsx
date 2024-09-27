@@ -1,9 +1,7 @@
 import React, { Component, useState } from "react";
 import Carousel from "react-spring-3d-carousel";
-import { config } from "react-spring";
 import { MdOutlineArrowBackIosNew } from 'react-icons/md'
 import { MdOutlineArrowForwardIos } from 'react-icons/md'
-// import NftCard from "../mint_page/NFT_Card";
 
 
 export default function Slider(props) {
@@ -24,7 +22,7 @@ export default function Slider(props) {
       {/*-------- Buttoms ------- */}
       <div className='z-10 flex flex-row justify-center w-full mt-4 text-secondary'>
         {/* Button left */}
-        <div className="p-1 mr-10 text-3xl transition duration-300 ease-in-out rounded-full shadow-lg cursor-pointer  hover:scale-125"
+        <div className="p-1 mr-10 text-3xl transition duration-300 ease-in-out rounded-full shadow-lg cursor-pointer hover:scale-125"
           onClick={() => {
             setstateGoToSlide(goToSlide - 1);
           }}>
@@ -32,7 +30,7 @@ export default function Slider(props) {
         </div>
 
         {/* button right */}
-        <div className="p-1 ml-10 text-3xl transition duration-300 ease-in-out rounded-full shadow-lg cursor-pointer  hover:scale-125"
+        <div className="p-1 ml-10 text-3xl transition duration-300 ease-in-out rounded-full shadow-lg cursor-pointer hover:scale-125"
           onClick={() => {
             setstateGoToSlide(goToSlide + 1);
           }}>

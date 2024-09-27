@@ -1,6 +1,6 @@
 import React from 'react';
 import Carousel_Legend from './Carousel_legendary';
-import NftCard from "./Card_Legendary";
+import ConnectButton from "./connectButton";
 import Image from 'next/image';
 import { FaEthereum } from 'react-icons/fa'
 import { FormattedMessage } from 'react-intl';
@@ -24,8 +24,7 @@ import { ConnectContext } from '../../context/MyProvider'
 // import {img} from '../../public/dragonkeeper/nft_legenday/10.webp'
 const NFTZone = (props) => {
 
-    const URL = 'https://sweetalert2.github.io/#examples'
-
+    // =================== Error alerts ===================
     const alertBought = (url, img) => {
         return (
             Swal.fire({
@@ -47,8 +46,77 @@ const NFTZone = (props) => {
             })
         )
     }
-    const img = '/dragonkeeper/nft_legenday/33.webp'
-    // alertBought(URL, img)
+
+    const alertsError = (error) => {
+        if (error.error) {
+            if (error.error.code === -32603) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    iconColor: '#7094b1',
+                    title: 'Sorry, this NFT has already been sold!',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#7B94b1'
+                })
+            }
+            else if (error.error.code === -32000) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    iconColor: '#7094b1',
+                    title: 'There are not enough funds!',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#7B94b1'
+                })
+            } else {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    iconColor: '#7094b1',
+                    title: 'Unexpected error',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#7B94b1'
+                })
+            }
+        }
+        else if (error.code) {
+            if (error.code == 'NETWORK_ERROR' || error.code == 'CALL_EXCEPTION') {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    iconColor: '#7094b1',
+                    title: 'Your not connected to the Ethereum network',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#7B94b1'
+                })
+            } else {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    iconColor: '#7094b1',
+                    title: 'Unexpected error',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#7B94b1'
+                })
+            }
+        } else {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                iconColor: '#7094b1',
+                title: 'Unexpected error',
+                showConfirmButton: true,
+                confirmButtonText: 'Ok',
+                confirmButtonColor: '#7B94b1'
+            })
+        }
+    }
+
 
 
     // =================== Loader ===================
@@ -78,11 +146,6 @@ const NFTZone = (props) => {
     const [imageURI, setImageURI] = useState(undefined);
     const [openseaURL, setOpenseaURL] = useState(undefined);
 
-    /* console.log('--------------------------')
-    console.log(isConnected)
-    console.log('--------------------------')
-    console.log('Is connected in NFT_Zone:' + connected)
- */
     useEffect(() => {
         if (typeof window.ethereum !== "undefined") {
             setHasMetamask(true);
@@ -100,29 +163,30 @@ const NFTZone = (props) => {
     //Function Mint Category ULTRARARE
     async function mint_UltraRare() {
         if (typeof window.ethereum !== "undefined") {
-            const contract = new ethers.Contract(
-                dragonKeeper,
-                DragonKeeper.abi,
-                signer
-            );
-            const tokenID_Collection = await contract.getTokenCounter();
-            console.log(`Token ID: ${tokenID_Collection.toString()}`);
-
-            const tokenId_UltraRare = await contract.getTokenCounter_UltraRare();
-            console.log(`Token ID Category UltraRare: ${tokenId_UltraRare.toString()}`);
-
-            const contentIdMetadata_UltraRare =
-                "QmQswc9AWienxmWLA3pGBQpMJ3R2kXdWCn51GAMxj5G9rE";
-            const metadataURI = `${contentIdMetadata_UltraRare}/${tokenId_UltraRare}.json`;
-            //console.log(`https://ipfs.io/ipfs/${metadataURI}`);
-
-            const contentIdImages_UltraRare =
-                "QmfEimuwbfPhdgnVnx3J1gbfpfdQYMwEYxGV8RT8sKMEDe";
-            const imageURI = `https://kubicsnft.mypinata.cloud/ipfs/${contentIdImages_UltraRare}/${tokenId_UltraRare}.png`;
-
-            //URL Needs to be updated with production data
-            const openSeaURL = `https://testnets.opensea.io/assets/goerli/${dragonKeeper}/${tokenID_Collection}`;
             try {
+                const contract = new ethers.Contract(
+                    dragonKeeper,
+                    DragonKeeper.abi,
+                    signer
+                );
+                const tokenID_Collection = await contract.getTokenCounter();
+                console.log(`Token ID: ${tokenID_Collection.toString()}`);
+
+                const tokenId_UltraRare = await contract.getTokenCounter_UltraRare();
+                console.log(`Token ID Category UltraRare: ${tokenId_UltraRare.toString()}`);
+
+                const contentIdMetadata_UltraRare =
+                    "QmQswc9AWienxmWLA3pGBQpMJ3R2kXdWCn51GAMxj5G9rE";
+                const metadataURI = `${contentIdMetadata_UltraRare}/${tokenId_UltraRare}.json`;
+
+
+                const contentIdImages_UltraRare =
+                    "QmfEimuwbfPhdgnVnx3J1gbfpfdQYMwEYxGV8RT8sKMEDe";
+                const imageURI = `https://kubicsnft.mypinata.cloud/ipfs/${contentIdImages_UltraRare}/${tokenId_UltraRare}.png`;
+
+                //URL Needs to be updated with production data
+                const openSeaURL = `https://testnets.opensea.io/assets/goerli/${dragonKeeper}/${tokenID_Collection}`;
+
                 setLoading(true)
                 const result = await contract.payToMint_UltraRare(metadataURI, {
                     value: ethers.utils.parseEther("0.005"),
@@ -132,11 +196,13 @@ const NFTZone = (props) => {
                 setImageURI(imageURI);
                 setLoading(false)
                 //------- ALERT --------
-                alertBought(openSeaURL,imageURI)
+                alertBought(openSeaURL, imageURI)
                 // ---------------------
                 console.log(openSeaURL);
             } catch (error) {
                 console.log(error);
+                setLoading(false)
+                alertsError(error)
             }
         } else {
             console.log("Please install MetaMask");
@@ -151,24 +217,26 @@ const NFTZone = (props) => {
                 DragonKeeper.abi,
                 signer
             );
-            const tokenID_Collection = await contract.getTokenCounter();
-            console.log(`Token ID: ${tokenID_Collection.toString()}`);
-
-            const tokenId_Rare = await contract.getTokenCounter_Rare();
-            console.log(`Token ID Category Rare: ${tokenId_Rare.toString()}`);
-
-            const contentIdMetadata_Rare =
-                "QmXULEzuP1aHfgbtRMDVwH2L2qG76K48cDd8s4S3uZsHxu";
-            const metadataURI = `${contentIdMetadata_Rare}/${tokenId_Rare}.json`;
-            //console.log(`https://ipfs.io/ipfs/${metadataURI}`);
-
-            const contentIdImages_Rare =
-                "QmQtxEB6H1PZRHSAQA4rFyUxUW4fiHbwDTVAMfw8SKkRVA";
-            const imageURI = `https://kubicsnft.mypinata.cloud/ipfs/${contentIdImages_Rare}/${tokenId_Rare}.png`;
-
-            //URL Needs to be updated with production data
-            const openSeaURL = `https://testnets.opensea.io/assets/goerli/${dragonKeeper}/${tokenID_Collection}`;
             try {
+                const tokenID_Collection = await contract.getTokenCounter();
+                console.log(`Token ID: ${tokenID_Collection.toString()}`);
+
+                const tokenId_Rare = await contract.getTokenCounter_Rare();
+                console.log(`Token ID Category Rare: ${tokenId_Rare.toString()}`);
+
+
+                const contentIdMetadata_Rare =
+                    "QmXULEzuP1aHfgbtRMDVwH2L2qG76K48cDd8s4S3uZsHxu";
+                const metadataURI = `${contentIdMetadata_Rare}/${tokenId_Rare}.json`;
+
+
+                const contentIdImages_Rare =
+                    "QmQtxEB6H1PZRHSAQA4rFyUxUW4fiHbwDTVAMfw8SKkRVA";
+                const imageURI = `https://kubicsnft.mypinata.cloud/ipfs/${contentIdImages_Rare}/${tokenId_Rare}.png`;
+
+                //URL Needs to be updated with production data
+                const openSeaURL = `https://testnets.opensea.io/assets/goerli/${dragonKeeper}/${tokenID_Collection}`;
+
                 setLoading(true)
                 const result = await contract.payToMint_Rare(metadataURI, {
                     value: ethers.utils.parseEther("0.005"),
@@ -178,11 +246,14 @@ const NFTZone = (props) => {
                 setImageURI(imageURI);
                 setLoading(false)
                 //------- ALERT --------
-                alertBought(openSeaURL,imageURI)
+                alertBought(openSeaURL, imageURI)
                 // ---------------------
                 console.log(openSeaURL);
             } catch (error) {
                 console.log(error);
+                setLoading(false)
+                alertsError(error)
+
             }
         } else {
             console.log("Please install MetaMask");
@@ -197,24 +268,26 @@ const NFTZone = (props) => {
                 DragonKeeper.abi,
                 signer
             );
-            const tokenID_Collection = await contract.getTokenCounter();
-            console.log(`Token ID: ${tokenID_Collection.toString()}`);
-
-            const tokenId_Uncommon = await contract.getTokenCounter_Uncommon();
-            console.log(`Token ID Category Uncommon: ${tokenId_Uncommon.toString()}`);
-
-            const contentIdMetadata_Uncommon =
-                "QmSuK42qdgBqhMQS69U4wJ9BBWrBRsdTgemrHqHfhAacM5";
-            const metadataURI = `${contentIdMetadata_Uncommon}/${tokenId_Uncommon}.json`;
-            //console.log(`https://ipfs.io/ipfs/${metadataURI}`);
-
-            const contentIdImages_Uncommon =
-                "QmWBWUpMCkqFoWb9QmLwVo3qKxoY1om1aBc6QtUUDui2Y1";
-            const imageURI = `https://kubicsnft.mypinata.cloud/ipfs/${contentIdImages_Uncommon}/${tokenId_Uncommon}.png`;
-
-            //URL Needs to be updated with production data
-            const openSeaURL = `https://testnets.opensea.io/assets/goerli/${dragonKeeper}/${tokenID_Collection}`;
             try {
+                const tokenID_Collection = await contract.getTokenCounter();
+                console.log(`Token ID: ${tokenID_Collection.toString()}`);
+
+                const tokenId_Uncommon = await contract.getTokenCounter_Uncommon();
+                console.log(`Token ID Category Uncommon: ${tokenId_Uncommon.toString()}`);
+
+
+                const contentIdMetadata_Uncommon =
+                    "QmSuK42qdgBqhMQS69U4wJ9BBWrBRsdTgemrHqHfhAacM5";
+                const metadataURI = `${contentIdMetadata_Uncommon}/${tokenId_Uncommon}.json`;
+
+
+                const contentIdImages_Uncommon =
+                    "QmWBWUpMCkqFoWb9QmLwVo3qKxoY1om1aBc6QtUUDui2Y1";
+                const imageURI = `https://kubicsnft.mypinata.cloud/ipfs/${contentIdImages_Uncommon}/${tokenId_Uncommon}.png`;
+
+                //URL Needs to be updated with production data
+                const openSeaURL = `https://testnets.opensea.io/assets/goerli/${dragonKeeper}/${tokenID_Collection}`;
+
                 setLoading(true)
                 const result = await contract.payToMint_Uncommon(metadataURI, {
                     value: ethers.utils.parseEther("0.005"),
@@ -222,13 +295,15 @@ const NFTZone = (props) => {
                 await result.wait();
                 setOpenseaURL(openSeaURL);
                 setImageURI(imageURI);
-                setLoading(false)
+                setLoading(false);
                 //------- ALERT --------
-                alertBought(openSeaURL,imageURI)
+                alertBought(openSeaURL, imageURI);
                 // ---------------------
                 console.log(openSeaURL);
             } catch (error) {
                 console.log(error);
+                setLoading(false);
+                alertsError(error);
             }
         } else {
             console.log("Please install MetaMask");
@@ -243,24 +318,26 @@ const NFTZone = (props) => {
                 DragonKeeper.abi,
                 signer
             );
-            const tokenID_Collection = await contract.getTokenCounter();
-            console.log(`Token ID: ${tokenID_Collection.toString()}`);
-
-            const tokenId_Common = await contract.getTokenCounter_Common();
-            console.log(`Token ID Category Common: ${tokenId_Common.toString()}`);
-
-            const contentIdMetadata_Common =
-                "QmazdhrysQenu9RePX2Y47VbJAUYMCjgtkMi6daepDLMwL";
-            const metadataURI = `${contentIdMetadata_Common}/${tokenId_Common}.json`;
-            //console.log(`https://ipfs.io/ipfs/${metadataURI}`);
-
-            const contentIdImages_Common =
-                "QmTTYqyXV9vpgwtvn9EeknNAuGqMScyf666GpzXDJrMHtz";
-            const imageURI = `https://kubicsnft.mypinata.cloud/ipfs/${contentIdImages_Common}/${tokenId_Common}.png`;
-
-            //URL Needs to be updated with production data
-            const openSeaURL = `https://testnets.opensea.io/assets/goerli/${dragonKeeper}/${tokenID_Collection}`;
             try {
+                const tokenID_Collection = await contract.getTokenCounter();
+                console.log(`Token ID: ${tokenID_Collection.toString()}`);
+
+                const tokenId_Common = await contract.getTokenCounter_Common();
+                console.log(`Token ID Category Common: ${tokenId_Common.toString()}`);
+
+
+                const contentIdMetadata_Common =
+                    "QmazdhrysQenu9RePX2Y47VbJAUYMCjgtkMi6daepDLMwL";
+                const metadataURI = `${contentIdMetadata_Common}/${tokenId_Common}.json`;
+
+
+                const contentIdImages_Common =
+                    "QmTTYqyXV9vpgwtvn9EeknNAuGqMScyf666GpzXDJrMHtz";
+                const imageURI = `https://kubicsnft.mypinata.cloud/ipfs/${contentIdImages_Common}/${tokenId_Common}.png`;
+
+                //URL Needs to be updated with production data
+                const openSeaURL = `https://testnets.opensea.io/assets/goerli/${dragonKeeper}/${tokenID_Collection}`;
+
                 setLoading(true)
                 const result = await contract.payToMint_Common(metadataURI, {
                     value: ethers.utils.parseEther("0.005"),
@@ -270,11 +347,13 @@ const NFTZone = (props) => {
                 setImageURI(imageURI);
                 setLoading(false)
                 //------- ALERT --------
-                alertBought(openSeaURL,imageURI)
+                alertBought(openSeaURL, imageURI)
                 // ---------------------
                 console.log(openSeaURL);
             } catch (error) {
                 console.log(error);
+                setLoading(false);
+                alertsError(error);
             }
         } else {
             console.log("Please install MetaMask");
@@ -473,6 +552,21 @@ const NFTZone = (props) => {
     const priceUCommon = 0.2
     const priceCommon = 0.18
 
+
+    /*      //Test
+         async function Withdraw() {
+            if (typeof window.ethereum !== "undefined") {
+                const contract = new ethers.Contract(
+                    dragonKeeper,
+                    DragonKeeper.abi,
+                    signer
+                );
+                await contract.Withdraw()
+            }
+        } */
+
+
+
     return (
         <>
             {/* ------- loading ----- */}
@@ -487,13 +581,17 @@ const NFTZone = (props) => {
                 </div>) : ''}
             {/* ---------------------- */}
             <div className='flex-col mt-5  lg:p-12 sm:p-10 p-4 items-center w-11/12  mb-4 rounded-lg border-2 shadow-lg shadow-[#7B94b1] bg-[#ffffff]  border-primary' >
-                <div className='md:absolute md:w-6/12 w-12/12  bg-[#7094b16e] rouded-lg md:left-1/4 -mt-20 md:text-2xl tracking-widest text-center -rotate-6 px-10 p-4 text-white may'>
+                {/* <div className='md:absolute md:w-6/12 w-12/12  bg-[#7094b16e] rouded-lg md:left-1/4 -mt-20 md:text-2xl tracking-widest text-center -rotate-6 px-10 p-4 text-white may'>
                     <FormattedMessage
                         id='imminent'
                         defaultMessage='IMINENTE'
                     />
-                </div>
+                </div> */}
+                
                 <h2 className='mb-4 text-3xl font-bold'>NFTs</h2>
+                <div className='flex justify-center mb-6'>
+                    <ConnectButton/>
+                    </div>
 
                 {/* --------- Description --------- */}
                 <div className='mb-8 text-justify ' >
@@ -509,8 +607,8 @@ const NFTZone = (props) => {
                     </p>
                 </div>
                 {/* =========================== LEGENDARY Category =========================== ) */}
-                <div className='mb-32'>
-                    <Carousel_Legend  loading={setLoading}  nfts_Sold={props.nfts_Sold} />
+                <div className='mb-32 ' >
+                    <Carousel_Legend loading={setLoading} nfts_Sold={props.nfts_Sold} />
                 </div>
                 {/* =========================== ULTRA RARE Category =========================== */}
                 <div className='flex flex-col items-center justify-around w-full gap-5 mb-20 text-justify rounded-lg sm:p-4 lg:gap-10 sm:shadow-md lg:items-start lg:flex-row'>
@@ -549,21 +647,28 @@ const NFTZone = (props) => {
                         <div className='flex items-center mt-4 ml-4 w-44'>
                             {hasMetamask ? (
                                 isConnected ? (
-                                        <button className="bg-white shadow-lg button learn-more" onClick={() => mint_UltraRare()} >
-                                            <span className="circle" aria-hidden="true">
-                                                <span className="icon arrow"></span>
-                                            </span>
-                                            <span className="button-text " translate="no">
-                                                Buy Now
-                                            </span>
-                                        </button>
+                                    <button className="bg-white shadow-lg button learn-more" onClick={() => mint_UltraRare()} >
+                                        <span className="circle" aria-hidden="true">
+                                            <span className="icon arrow"></span>
+                                        </span>
+                                        <span className="button-text " translate="no">
+                                            Buy Now
+                                        </span>
+                                    </button>
                                 ) : (
                                     <button className="bg-white shadow-lg button learn-more" onClick={() => conn_Context.connect()} >
                                         <span className="circle" aria-hidden="true">
                                             <span className="icon arrow"></span>
                                         </span>
-                                        <span className="button-text " translate="no">
+                                        <span className="flex items-center justify-center gap-1 button-text" translate="no">
                                             Connect
+                                            {/* <Image
+                                                className="ml-4"
+                                                src='/MetaMask.png'
+                                                width='25'
+                                                height='25'
+                                                alt="metamask"
+                                            /> */}
                                         </span>
                                     </button>
                                 )
@@ -578,8 +683,15 @@ const NFTZone = (props) => {
                                         <span className="circle" aria-hidden="true">
                                             <span className="icon arrow"></span>
                                         </span>
-                                        <span className="button-text " translate="no">
-                                            Connect
+                                        <span className="flex items-center justify-center gap-1 button-text" translate="no">
+                                            Install
+                                            {/* <Image
+                                                className="ml-4"
+                                                src='/MetaMask.png'
+                                                width='25'
+                                                height='25'
+                                                alt="metamask"
+                                            /> */}
                                         </span>
                                     </button>
                                 </Link>
@@ -639,8 +751,15 @@ const NFTZone = (props) => {
                                         <span className="circle" aria-hidden="true">
                                             <span className="icon arrow"></span>
                                         </span>
-                                        <span className="button-text " translate="no">
+                                        <span className="flex items-center justify-center gap-1 button-text" translate="no">
                                             Connect
+                                            {/* <Image
+                                                className="ml-4"
+                                                src='/MetaMask.png'
+                                                width='25'
+                                                height='25'
+                                                alt="metamask"
+                                            /> */}
                                         </span>
                                     </button>
                                 )
@@ -655,8 +774,15 @@ const NFTZone = (props) => {
                                         <span className="circle" aria-hidden="true">
                                             <span className="icon arrow"></span>
                                         </span>
-                                        <span className="button-text " translate="no">
-                                            Connect
+                                        <span className="flex items-center justify-center gap-1 button-text" translate="no">
+                                            Install
+                                            {/* <Image
+                                                className="ml-4"
+                                                src='/MetaMask.png'
+                                                width='25'
+                                                height='25'
+                                                alt="metamask"
+                                            /> */}
                                         </span>
                                     </button>
                                 </Link>
@@ -694,8 +820,15 @@ const NFTZone = (props) => {
                                             <span className="circle" aria-hidden="true">
                                                 <span className="icon arrow"></span>
                                             </span>
-                                            <span className="button-text " translate="no">
+                                            <span className="flex items-center justify-center gap-1 button-text" translate="no">
                                                 Connect
+                                                {/* <Image
+                                                    className="ml-4"
+                                                    src='/MetaMask.png'
+                                                    width='25'
+                                                    height='25'
+                                                    alt="metamask"
+                                                /> */}
                                             </span>
                                         </button>
                                     )
@@ -710,8 +843,15 @@ const NFTZone = (props) => {
                                             <span className="circle" aria-hidden="true">
                                                 <span className="icon arrow"></span>
                                             </span>
-                                            <span className="button-text " translate="no">
-                                                Connect
+                                            <span className="flex items-center justify-center gap-1 button-text" translate="no">
+                                                Install
+                                                {/* <Image
+                                                    className="ml-4"
+                                                    src='/MetaMask.png'
+                                                    width='25'
+                                                    height='25'
+                                                    alt="metamask"
+                                                /> */}
                                             </span>
                                         </button>
                                     </Link>
@@ -790,8 +930,15 @@ const NFTZone = (props) => {
                                         <span className="circle" aria-hidden="true">
                                             <span className="icon arrow"></span>
                                         </span>
-                                        <span className="button-text " translate="no">
+                                        <span className="flex items-center justify-center gap-1 button-text" translate="no">
                                             Connect
+                                            {/* <Image
+                                                className="ml-4"
+                                                src='/MetaMask.png'
+                                                width='25'
+                                                height='25'
+                                                alt="metamask"
+                                            /> */}
                                         </span>
                                     </button>
                                 )
@@ -806,8 +953,15 @@ const NFTZone = (props) => {
                                         <span className="circle" aria-hidden="true">
                                             <span className="icon arrow"></span>
                                         </span>
-                                        <span className="button-text " translate="no">
-                                            Connect
+                                        <span className="flex items-center justify-center gap-1 button-text" translate="no">
+                                            Install
+                                            {/* <Image
+                                                className="ml-4"
+                                                src='/MetaMask.png'
+                                                width='25'
+                                                height='25'
+                                                alt="metamask"
+                                            /> */}
                                         </span>
                                     </button>
                                 </Link>
@@ -865,8 +1019,15 @@ const NFTZone = (props) => {
                                         <span className="circle" aria-hidden="true">
                                             <span className="icon arrow"></span>
                                         </span>
-                                        <span className="button-text " translate="no">
+                                        <span className="flex items-center justify-center gap-1 button-text" translate="no">
                                             Connect
+                                            {/* <Image
+                                                className="ml-4"
+                                                src='/MetaMask.png'
+                                                width='25'
+                                                height='25'
+                                                alt="metamask"
+                                            /> */}
                                         </span>
                                     </button>
                                 )
@@ -881,8 +1042,15 @@ const NFTZone = (props) => {
                                         <span className="circle" aria-hidden="true">
                                             <span className="icon arrow"></span>
                                         </span>
-                                        <span className="button-text " translate="no">
-                                            Connect
+                                        <span className="flex items-center justify-center gap-1 button-text" translate="no">
+                                            Install
+                                            {/* <Image
+                                                className="ml-4"
+                                                src='/MetaMask.png'
+                                                width='25'
+                                                height='25'
+                                                alt="metamask"
+                                            /> */}
                                         </span>
                                     </button>
                                 </Link>
@@ -895,7 +1063,7 @@ const NFTZone = (props) => {
                     {/* ----------- NFT DESCRIPTION ----------- */}
                     <div className='flex flex-col items-center justify-between h-12/12 '>
                         <div className='flex flex-col items-start justify-center w-full mb-8'>
-                            <div className='w-full mb-6 text-lg border-b may text-secondary text-start'>common</div>
+                            <div className='w-full mb-6 text-lg border-b may text-secondary text-start'>COMMON</div>
                             <ul className='ml-8 list-disc text-start'>
                                 <li className='mb-2'><FormattedMessage id='nft.common1' default='description' /></li>
                                 <li className='mb-2'><FormattedMessage id='nft.common2' default='description' /></li>
@@ -918,8 +1086,15 @@ const NFTZone = (props) => {
                                             <span className="circle" aria-hidden="true">
                                                 <span className="icon arrow"></span>
                                             </span>
-                                            <span className="button-text " translate="no">
+                                            <span className="flex items-center justify-center gap-1 button-text" translate="no">
                                                 Connect
+                                                {/* <Image
+                                                    className="ml-4"
+                                                    src='/MetaMask.png'
+                                                    width='25'
+                                                    height='25'
+                                                    alt="metamask"
+                                                /> */}
                                             </span>
                                         </button>
                                     )
@@ -934,8 +1109,15 @@ const NFTZone = (props) => {
                                             <span className="circle" aria-hidden="true">
                                                 <span className="icon arrow"></span>
                                             </span>
-                                            <span className="button-text " translate="no">
-                                                Connect
+                                            <span className="flex items-center justify-center gap-1 button-text" translate="no">
+                                                Install
+                                                {/* <Image
+                                                    className="ml-4"
+                                                    src='/MetaMask.png'
+                                                    width='25'
+                                                    height='25'
+                                                    alt="metamask"
+                                                /> */}
                                             </span>
                                         </button>
                                     </Link>
@@ -962,8 +1144,10 @@ const NFTZone = (props) => {
                                 </p>
                             </div>
                         </div>
+
                     </div>
                 </div>
+                {/* <button className="bg-white shadow-lg button learn-more" onClick={() => Withdraw()}> Withdraw </button> */}
             </div>
         </>
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 const TestRoadmap = () => {
     return (
-        <div className='flex flex-row md:w-6/12 '>
+        <div className='flex flex-row w-10/12 md:w-8/12 sm:8/12'>
             {/* ========================================== Left column ========================================== */}
             <div className='left'>
                 <div className='group'>

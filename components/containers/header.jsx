@@ -25,7 +25,7 @@ const Header = () => {
             <div className='w-full mb-40 justify-self-center'>
                 {/* WalletConnect */}
                 <div className="flex items-center justify-center h-full">
-                        <Whitelist />
+                        {/* <Whitelist /> */}
                     </div>
             </div>
 

@@ -59,7 +59,7 @@
     "dk.sipnosis4":"Ping ayudará a escapar a Danzi ,el último dragón, y recuperará el huevo de dragón de las manos del enfermo emperador y su malvado consejero Diao. Esta historia es un viaje donde Ping conocerá su poder interior y aceptará su destino como la última cuidadora de dragones … los llamados Dragonkeepers.",
     "AS":"es",
     "nft.description":"La primera colección de NFTs de la película Dragonkeeper se compone de 10240 Dragones inspirados en la película en cinco diferentes categorías, en cada una de ellas el dragón tiene variaciones básicas como la posición o el añadido del Huevo de Dragón, elemento importante en la película. Cada categoría ofrece diferentes ventajas.",
-    "nft.description2":"En cada categoría la asignación del Dragón es aleatoria a excepción de la Legendary donde podréis elegir entre los sólo 40 el que más os guste.",
+    "nft.description2":"En cada categoría la asignación del Dragón es aleatoria a excepción de la Legendary donde podréis elegir entre los 40 el que más os guste.",
     "nft.legendary1":"Airdrops de futuros proyectos",
     "nft.legendary2":"Participación en la KubicsDAO",
     "nft.legendary3":"Acceso al canal exclusivo Dragonkeeper en Discord",
@@ -92,7 +92,10 @@
     "nft.common4":"Entradas para Dragonkeeper en cines",
     "coming.soon":"PROXIMAMENTE",
     "sold":"VENDIDO",
-    "imminent":"Venta disponible proximamente"
+    "imminent":"Venta disponible proximamente",
+    "NFT.metamask": "¡Conéctese con Metamask para comprar NFTs¡",
+    "NFT.metamask.install1": "¡Debe de tener una wallet en ",
+    "NFT.metamask.install2": " para poder comprar NFTs!"
     
     
     

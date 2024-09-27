@@ -123,11 +123,16 @@
     color: #7B94B1;
   }
   
-  
-  @media (max-width: 1000px) {
+  @media (max-width: 600px) {
     .logoP{
       width: 30px;
       height: 30px;
+    }
+  }
+  @media (max-width: 1000px) {
+    .logoP{
+      width: 50px;
+      height: 50px;
     }
   
     .LineH{ 

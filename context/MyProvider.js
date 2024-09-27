@@ -12,7 +12,9 @@ export function MyProvider({ children }) {
     checkIfWalletIsConnected();
   }, []);
 
+  
   useEffect(() => {
+    if (typeof window.ethereum !== "undefined") {
     async function initWeb3() {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -24,6 +26,9 @@ export function MyProvider({ children }) {
     }
     initWeb3();
     return () => removeListener(window.ethereum);
+  
+  }
+    
   }, []);
 
   // this has to be set once globally. metamask suggests

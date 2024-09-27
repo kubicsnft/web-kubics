@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import NftCard from "./Card_Legendary";
 import { v4 as uuidv4 } from "uuid";
 import { FormattedMessage } from 'react-intl';
+import { MovingSquareLoader } from 'react-loaders-kit';
 
 
 
@@ -61,27 +62,20 @@ import { BiUnderline } from 'react-icons/bi';
 
 
 
-// Syiles Tailwind 
-const style = {
-    container: 'relative flex-col mt-8 items-center w-full justify-center   sm:mb-16',
-    category_box: ' border rounded-md cursor-pointer shadow-lg mr-2 text-sm w-20 '
-}
-
-
-
 //const fetcher = (...args) => fetch(...args).then(res=>res.json());
 
 function Carousel(props) {
     const [reactData, setReactData] = useState([props.nfts_Sold]);
     const connected = props.connected;
-/*      console.log("---------------------------")
-     console.log(props.nfts_Sold) */
+    //  console.log("---------------------------")
+    //  console.log(props.nfts_Sold)
 
-const loading = props.loading
-//    console.log(loading)
+    const loading = props.loading
+    // console.log(loading)
+
 
     const SoldNft = (id) => {
-       var sold = false
+        var sold = false
 
         for (var i = 0; i < reactData[0].length; i++) {
             //console.log(reactData[0][0].id, id)
@@ -90,7 +84,7 @@ const loading = props.loading
                 // console.log(sold)
             }
         }
-        return sold    
+        return sold
     }
 
     // ------- Categorys of arrays -------
@@ -104,7 +98,7 @@ const loading = props.loading
                 description=""
                 price=''
                 sold={SoldNft(0)}
-              loading={loading}  
+                loading={loading}
             />
         },
         {
@@ -612,6 +606,14 @@ const loading = props.loading
     }
     // ----------------
 
+
+    // ------- Syiles Tailwind 
+    const style = {
+        container: 'relative flex-col mt-8 items-center w-full justify-center   sm:mb-16',
+        category_box: ' border rounded-md cursor-pointer shadow-lg mr-2 text-sm w-20 '
+    }
+
+    // ------ Carousel
     const CarruselSize = (props) => {
         return (<Carrusel category={props.category} radius={props.radius} />)
     }
@@ -624,13 +626,13 @@ const loading = props.loading
                     <h2 className='w-full mb-4 text-lg border-b may text-secondary text-start'>LEGENDARY CATEGORY</h2>
                     <div className='flex flex-col justify-center w-full pl-6 mb-8 items-star'>
                         <ul className='mb-2 list-disc text-start'>
-                            <li><FormattedMessage id='nft.legendary1' default='description' /></li>
-                            <li><FormattedMessage id='nft.legendary2' default='description' /></li>
-                            <li><FormattedMessage id='nft.legendary3' default='description' /></li>
-                            <li><FormattedMessage id='nft.legendary4' default='description' /></li>
-                            <li><FormattedMessage id='nft.legendary5' default='description' /></li>
-                            <li><FormattedMessage id='nft.legendary6' default='description' /></li>
-                            <li><FormattedMessage id='nft.legendary7' default='description' /></li>
+                            <li className='mb-1'><FormattedMessage id='nft.legendary1' default='description' /></li>
+                            <li className='mb-1'><FormattedMessage id='nft.legendary2' default='description' /></li>
+                            <li className='mb-1'><FormattedMessage id='nft.legendary3' default='description' /></li>
+                            <li className='mb-1'><FormattedMessage id='nft.legendary4' default='description' /></li>
+                            <li className='mb-1'><FormattedMessage id='nft.legendary5' default='description' /></li>
+                            <li className='mb-1'><FormattedMessage id='nft.legendary6' default='description' /></li>
+                            <li className='mb-1'><FormattedMessage id='nft.legendary7' default='description' /></li>
                         </ul>
 
                     </div>
@@ -679,12 +681,9 @@ const loading = props.loading
                     <CarruselSize category={category} radius={2} />
                 </div>
                 {/* Carousel sm */}
-                <div className='hidden mt-4 xl:flex'>
+                <div className='relative hidden mt-4 xl:flex'>
                     <CarruselSize category={category} radius={4} />
                 </div>
-
-
-
             </div>
         </>
     )
